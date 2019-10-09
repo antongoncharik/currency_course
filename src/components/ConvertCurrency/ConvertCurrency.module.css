@@ -1,5 +1,30 @@
-div {
-    width: 200px;
-    height: 200px;
-    border: green 5px solid;
+.blockConvertCurrency {
+    display: grid;
+    grid-template-areas: 'textConvert textConvert' 'currency1 count1' 'currency2 count2';
+    grid-template-columns: 5fr 5fr;
+    grid-template-rows: 1fr 2fr 2fr;
+}
+
+.textConvert {
+    grid-area: textConvert;
+}
+
+.currency1 {
+    grid-area: currency1;
+}
+
+.count1 {
+    grid-area: count1;
+}
+
+.currency2 {
+    grid-area: currency2;
+}
+
+.count2 {
+    grid-area: count2;
+}
+
+.blockText {
+    font: 26px a_LCDNova, TimesNewRoman, sans-serif;
 }
