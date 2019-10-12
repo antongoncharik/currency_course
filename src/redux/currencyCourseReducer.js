@@ -33,17 +33,19 @@ export const currencyCourseReducer = (state = initialState, action) => {
                         course: action.dataCurrency.Cur_OfficialRate,
                         date: action.dataCurrency.Date
                     }
-                ]
+                ].filter(item => {
+                    return item.course > 0
+                })
             };
-            break;
-        case
-        GET_CURRENCY_COURSE_TO_PERIOD:
             break;
         case
         SET_SELECTED_CURRENCY:
             return {
                 ...state, selectedCurrencyId: action.id
             };
+            break;
+        case
+        GET_CURRENCY_COURSE_TO_PERIOD:
             break;
         default:
             return state;
@@ -81,15 +83,11 @@ export const getCurrencies = () => {
 }
 
 export const getCurrencyCourse = (id) => {
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
         try {
             const result = await getCurrencyCourseAPI(id);
             if (result.status === 200) {
-                const currencies = getState().currenciesCourses.currenciesCourses;
-                const hasCurrency = currencies.find(item => item.currencyId === +id);
-                if (!hasCurrency) {
-                    dispatch(getCurrencyCourseAC(result.data));
-                }
+                dispatch(getCurrencyCourseAC(result.data));
                 dispatch(setSelectedCurrencyAC(id));
             }
         } catch (e) {
