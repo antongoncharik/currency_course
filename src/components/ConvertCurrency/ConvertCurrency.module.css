@@ -27,6 +27,7 @@
 
 .blockText {
     font: 26px a_LCDNova, TimesNewRoman, sans-serif;
+    color: white;
 }
 
 .blockCurrentlyCourseText {
@@ -42,6 +43,6 @@
     font: 26px a_LCDNova, TimesNewRoman, sans-serif;
     font-weight: bold;
     color: white;
-    background: black;
+    background: #1b1d1d;
     outline: none;
 }
