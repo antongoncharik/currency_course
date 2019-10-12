@@ -28,3 +28,20 @@
 .blockText {
     font: 26px a_LCDNova, TimesNewRoman, sans-serif;
 }
+
+.blockCurrentlyCourseText {
+    cursor: pointer;
+    width: 150px;
+    height: 30px;
+    text-align: center;
+    padding: 5px;
+    border: solid 3px white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    font: 26px a_LCDNova, TimesNewRoman, sans-serif;
+    font-weight: bold;
+    color: white;
+    background: black;
+    outline: none;
+}

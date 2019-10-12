@@ -4,12 +4,16 @@ const GET_CURRENCIES = 'GET_CURRENCIES';
 const GET_CURRENCY_COURSE = 'GET_CURRENCY_COURSE';
 const GET_CURRENCY_COURSE_TO_PERIOD = 'GET_CURRENCY_COURSE_TO_PERIOD';
 const SET_SELECTED_CURRENCY = 'SET_SELECTED_CURRENCY';
+const SET_SELECTED_CURRENCY_UP = 'SET_SELECTED_CURRENCY_UP';
+const SET_SELECTED_CURRENCY_DOWN = 'SET_SELECTED_CURRENCY_DOWN';
 
 const initialState = {
     currencies: [{currencyId: 145, currencyAbbreviation: '', currencyName: ''}],
     currenciesCourses: [{currencyId: 145, scale: 0, course: 0, date: ''}],
     currencyCourseToPeriod: [{currencyId: 145, course: 0, date: ''}],
-    selectedCurrencyId: 145
+    selectedCurrencyId: 145,
+    selectedCurrencyUpId: 145,
+    selectedCurrencyDownId: 145
 };
 
 export const currencyCourseReducer = (state = initialState, action) => {
@@ -45,6 +49,18 @@ export const currencyCourseReducer = (state = initialState, action) => {
             };
             break;
         case
+        SET_SELECTED_CURRENCY_UP:
+            return {
+                ...state, selectedCurrencyUpId: action.id
+            };
+            break;
+        case
+        SET_SELECTED_CURRENCY_DOWN:
+            return {
+                ...state, selectedCurrencyDownId: action.id
+            };
+            break;
+        case
         GET_CURRENCY_COURSE_TO_PERIOD:
             break;
         default:
@@ -68,6 +84,14 @@ const setSelectedCurrencyAC = (id) => {
     return {type: 'SET_SELECTED_CURRENCY', id}
 };
 
+const setSelectedCurrencyUpAC = (id) => {
+    return {type: 'SET_SELECTED_CURRENCY_UP', id}
+};
+
+const setSelectedCurrencyDownAC = (id) => {
+    return {type: 'SET_SELECTED_CURRENCY_DOWN', id}
+};
+
 export const getCurrencies = () => {
     return async (dispatch) => {
         try {
@@ -80,18 +104,24 @@ export const getCurrencies = () => {
 
         }
     }
-}
+};
 
-export const getCurrencyCourse = (id) => {
+export const getCurrencyCourse = (id, numberCurrency = '') => {
     return async (dispatch) => {
         try {
             const result = await getCurrencyCourseAPI(id);
             if (result.status === 200) {
                 dispatch(getCurrencyCourseAC(result.data));
-                dispatch(setSelectedCurrencyAC(id));
+                if (numberCurrency === '') {
+                    dispatch(setSelectedCurrencyAC(id));
+                } else if (numberCurrency === 'up') {
+                    dispatch(setSelectedCurrencyUpAC(id));
+                } else if (numberCurrency === 'down') {
+                    dispatch(setSelectedCurrencyDownAC(id));
+                }
             }
         } catch (e) {
 
         }
     }
-}
+};
