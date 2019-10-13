@@ -3,7 +3,7 @@ import s from './CurrentlyCurrencyCourse.module.css';
 import cn from 'classnames';
 import {connect} from "react-redux";
 import {getCurrencies, getCurrencyCourse} from "../../redux/currencyCourseReducer";
-import CommonSelectCurrency from "../CommonComponents/CommonComponents";
+import {CommonSelectCurrency} from "../CommonComponents/CommonComponents";
 
 const CurrentlyCurrencyCourse = (props) => {
     const [openedList, openCloseList] = useState(false);

@@ -1,6 +1,6 @@
 .blockConvertCurrency {
     display: grid;
-    grid-template-areas: 'textConvert textConvert' 'currency1 count1' 'currency2 count2';
+    grid-template-areas: 'textConvert textConvert' 'currencyUp countUp' 'currencyDown countDown';
     grid-template-columns: 5fr 5fr;
     grid-template-rows: 1fr 2fr 2fr;
 }
@@ -9,20 +9,20 @@
     grid-area: textConvert;
 }
 
-.currency1 {
-    grid-area: currency1;
+.currencyUp {
+    grid-area: currencyUp;
 }
 
-.count1 {
-    grid-area: count1;
+.countUp {
+    grid-area: countUp;
 }
 
-.currency2 {
-    grid-area: currency2;
+.currencyDown {
+    grid-area: currencyDown;
 }
 
-.count2 {
-    grid-area: count2;
+.countDown {
+    grid-area: countDown;
 }
 
 .blockText {
