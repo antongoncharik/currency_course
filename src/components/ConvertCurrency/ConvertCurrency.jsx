@@ -7,27 +7,19 @@ import {getCurrencyCourse, setAmountCurrency} from "../../redux/currencyCourseRe
 
 const ConvertCurrency = (props) => {
     const [openedListUp, openCloseListUp] = useState(false);
-
     const [openedListDown, openCloseListDown] = useState(false);
-
     const currencyUpAbbreviation = props.currencies.find(item => item.currencyId === +props.selectedCurrencyUpId).currencyAbbreviation;
-
     const currencyDownAbbreviation = props.currencies.find(item => item.currencyId === +props.selectedCurrencyDownId).currencyAbbreviation;
-
     const scaleUp = props.currenciesCourses.find(item => item.currencyId === +props.selectedCurrencyUpId).scale;
-
     const scaleDown = props.currenciesCourses.find(item => item.currencyId === +props.selectedCurrencyDownId).scale;
-
     const changeCurrencyUp = (e) => {
         openCloseListUp(false);
         props.getCurrencyCourse(e.currentTarget.value, 'up', props.amountCurrencyUp, props.selectedCurrencyUpId, props.selectedCurrencyDownId);
     };
-
     const changeCurrencyDown = (e) => {
         openCloseListDown(false);
         props.getCurrencyCourse(e.currentTarget.value, 'down', props.amountCurrencyDown, props.selectedCurrencyUpId, props.selectedCurrencyDownId);
     };
-
     const changeAmountCurrency = (e, changedCurrency, currencyUpId, currencyDownId) => {
         props.setAmountCurrency(changedCurrency, +e.currentTarget.value, currencyUpId, currencyDownId);
     };
@@ -42,13 +34,15 @@ const ConvertCurrency = (props) => {
                                           selectedCurrencyId={props.selectedCurrencyUpId}
                                           changeCurrency={(e) => changeCurrencyUp(e)}/> ||
                     <div className={s.blockCurrentlyCourseText}
-                         onClick={() => openCloseListUp(true)}>{`${currencyUpAbbreviation} (${scaleUp})`}</div>}
+                         onClick={() =>
+                             openCloseListUp(true)}>{`${currencyUpAbbreviation} (${scaleUp})`}</div>}
                 </div>
                 <div className={cn(s.countUp)}>
                     <CommonInputCurrency amountCurrency={props.amountCurrencyUp}
                                          selectedCurrencyUpId={props.selectedCurrencyUpId}
                                          selectedCurrencyDownId={props.selectedCurrencyDownId}
-                                         changeAmountCurrency={(e) => changeAmountCurrency(e, 'up', props.selectedCurrencyUpId, props.selectedCurrencyDownId)}/>
+                                         changeAmountCurrency={(e) =>
+                                             changeAmountCurrency(e, 'up', props.selectedCurrencyUpId, props.selectedCurrencyDownId)}/>
                 </div>
                 <div className={cn(s.currencyDown)}>
                     {openedListDown &&
@@ -56,13 +50,15 @@ const ConvertCurrency = (props) => {
                                           selectedCurrencyId={props.selectedCurrencyDownId}
                                           changeCurrency={(e) => changeCurrencyDown(e)}/> ||
                     <div className={s.blockCurrentlyCourseText}
-                         onClick={() => openCloseListDown(true)}>{`${currencyDownAbbreviation} (${scaleDown})`}</div>}
+                         onClick={() =>
+                             openCloseListDown(true)}>{`${currencyDownAbbreviation} (${scaleDown})`}</div>}
                 </div>
                 <div className={cn(s.countDown)}>
                     <CommonInputCurrency amountCurrency={props.amountCurrencyDown}
                                          selectedCurrencyUpId={props.selectedCurrencyUpId}
                                          selectedCurrencyDownId={props.selectedCurrencyDownId}
-                                         changeAmountCurrency={(e) => changeAmountCurrency(e, 'down', props.selectedCurrencyUpId, props.selectedCurrencyDownId)}/>
+                                         changeAmountCurrency={(e) =>
+                                             changeAmountCurrency(e, 'down', props.selectedCurrencyUpId, props.selectedCurrencyDownId)}/>
                 </div>
             </div>
         </div>

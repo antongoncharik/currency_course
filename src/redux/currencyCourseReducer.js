@@ -82,27 +82,21 @@ export const currencyCourseReducer = (state = initialState, action) => {
 const getCurrenciesAC = (dataCurrencies) => {
     return {type: 'GET_CURRENCIES', dataCurrencies}
 };
-
 const getCurrencyCourseAC = (dataCurrency) => {
     return {type: 'GET_CURRENCY_COURSE', dataCurrency}
 };
-
 const getCurrencyCourseToPeriodAC = () => {
     return {type: 'GET_CURRENCY_COURSE_TO_PERIOD'}
 };
-
 const setSelectedCurrencyAC = (id) => {
     return {type: 'SET_SELECTED_CURRENCY', id}
 };
-
 const setSelectedCurrencyUpAC = (id) => {
     return {type: 'SET_SELECTED_CURRENCY_UP', id}
 };
-
 const setSelectedCurrencyDownAC = (id) => {
     return {type: 'SET_SELECTED_CURRENCY_DOWN', id}
 };
-
 const setAmountCurrencyAC = (amountUp, amountDown) => {
     return {type: 'SET_AMOUNT_CURRENCY', amountUp, amountDown}
 };
@@ -120,7 +114,6 @@ export const getCurrencies = () => {
         }
     }
 };
-
 export const getCurrencyCourse = (id, numberCurrency = '', amount, currencyUpId, currencyDownId) => {
     return async (dispatch, getState) => {
         try {
@@ -142,14 +135,12 @@ export const getCurrencyCourse = (id, numberCurrency = '', amount, currencyUpId,
         }
     }
 };
-
 export const setAmountCurrency = (changedCurrency, amount, currencyUpId, currencyDownId) => {
     return (dispatch, getState) => {
         setCalculationCurrency(dispatch, getState().currenciesCourses.currenciesCourses, changedCurrency, amount, currencyUpId, currencyDownId);
 
     }
 };
-
 const setCalculationCurrency = (dispatch, currenciesCourses, changedCurrency, amount, currencyUpId, currencyDownId) => {
     const scaleUp = +currenciesCourses.find(item => item.currencyId === +currencyUpId).scale;
     const courseUp = +currenciesCourses.find(item => item.currencyId === +currencyUpId).course;

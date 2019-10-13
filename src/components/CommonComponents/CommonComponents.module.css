@@ -43,3 +43,7 @@
 .select option {
     font-weight: normal;
 }
+
+input {
+    height: 50px;
+}

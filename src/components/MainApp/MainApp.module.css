@@ -3,7 +3,6 @@
     grid-template-areas: 'currentlyCurrency chartCurrency' 'convertCurrency chartCurrency';
     grid-template-columns: 3fr 7fr;
     grid-template-rows: 2fr 4fr;
-    grid-row-gap: 50px;
     background-color: #1b1d1d;
 }
 
