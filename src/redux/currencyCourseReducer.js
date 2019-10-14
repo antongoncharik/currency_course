@@ -1,4 +1,8 @@
-import {getCurrenciesAPI, getCurrencyCourseAPI} from "../API/officialCurrenciesCoursesAPI";
+import {
+    getCurrenciesAPI,
+    getCurrencyCourseAPI,
+    getCurrencyCourseToPeriodAPI
+} from "../API/officialCurrenciesCoursesAPI";
 import {calculationAmountCurrency} from "../helpers/calculationAmountCurrency";
 
 const GET_CURRENCIES = 'GET_CURRENCIES';
@@ -12,7 +16,7 @@ const SET_AMOUNT_CURRENCY = 'SET_AMOUNT_CURRENCY';
 const initialState = {
     currencies: [{currencyId: 145, currencyAbbreviation: '', currencyName: ''}],
     currenciesCourses: [{currencyId: 145, scale: 0, course: 0, date: ''}],
-    currencyCourseToPeriod: [{currencyId: 145, course: 0, date: ''}],
+    currencyCourseToPeriod: [{currencyId: 145, course: 0, date: ''}, {currencyId: 145, course: 1, date: ''}],
     selectedCurrencyId: 145,
     selectedCurrencyUpId: 145,
     selectedCurrencyDownId: 145,
@@ -73,6 +77,14 @@ export const currencyCourseReducer = (state = initialState, action) => {
             break;
         case
         GET_CURRENCY_COURSE_TO_PERIOD:
+            return {
+                ...state, currencyCourseToPeriod: action.dataCurrencyToPeriod.map(item =>
+                    ({
+                        currencyId: item.Cur_ID,
+                        course: item.Cur_OfficialRate,
+                        date: item.Date
+                    }))
+            };
             break;
         default:
             return state;
@@ -85,8 +97,8 @@ const getCurrenciesAC = (dataCurrencies) => {
 const getCurrencyCourseAC = (dataCurrency) => {
     return {type: 'GET_CURRENCY_COURSE', dataCurrency}
 };
-const getCurrencyCourseToPeriodAC = () => {
-    return {type: 'GET_CURRENCY_COURSE_TO_PERIOD'}
+const setCurrencyCourseToPeriodAC = (id, dataCurrencyToPeriod) => {
+    return {type: 'GET_CURRENCY_COURSE_TO_PERIOD', id, dataCurrencyToPeriod}
 };
 const setSelectedCurrencyAC = (id) => {
     return {type: 'SET_SELECTED_CURRENCY', id}
@@ -129,6 +141,18 @@ export const getCurrencyCourse = (id, numberCurrency = '', amount, currencyUpId,
                     dispatch(setSelectedCurrencyDownAC(id));
                     setCalculationCurrency(dispatch, getState().currenciesCourses.currenciesCourses, numberCurrency, amount, currencyUpId, id);
                 }
+            }
+        } catch (e) {
+
+        }
+    }
+};
+export const getCurrencyCourseToPeriod = (id, startDate, endDate) => {
+    return async (dispatch) => {
+        try {
+            const result = await getCurrencyCourseToPeriodAPI(id, startDate, endDate);
+            if (result.status === 200) {
+                dispatch(setCurrencyCourseToPeriodAC(id, result.data));
             }
         } catch (e) {
 

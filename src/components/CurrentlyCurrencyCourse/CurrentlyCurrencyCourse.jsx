@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import s from './CurrentlyCurrencyCourse.module.css';
 import cn from 'classnames';
 import {connect} from "react-redux";
-import {getCurrencies, getCurrencyCourse} from "../../redux/currencyCourseReducer";
+import {getCurrencies, getCurrencyCourse, getCurrencyCourseToPeriod} from "../../redux/currencyCourseReducer";
 import {CommonSelectCurrency} from "../CommonComponents/CommonComponents";
 
 const CurrentlyCurrencyCourse = (props) => {
@@ -47,9 +47,10 @@ const mapStateToProps = (state) => {
         currenciesCourses: state.currenciesCourses.currenciesCourses,
         selectedCurrencyId: state.currenciesCourses.selectedCurrencyId
     }
-}
+};
 
 export default connect(mapStateToProps, {
     getCurrencies,
-    getCurrencyCourse
+    getCurrencyCourse,
+    getCurrencyCourseToPeriod
 })(CurrentlyCurrencyCourse);
