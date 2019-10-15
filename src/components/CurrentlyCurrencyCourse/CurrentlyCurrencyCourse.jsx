@@ -2,16 +2,20 @@ import React, {useState, useEffect} from 'react';
 import s from './CurrentlyCurrencyCourse.module.css';
 import cn from 'classnames';
 import {connect} from "react-redux";
-import {getCurrencies, getCurrencyCourse, getCurrencyCourseToPeriod} from "../../redux/currencyCourseReducer";
+import {setCurrencies, setCurrencyCourse, getCurrencyCourseToPeriod} from "../../redux/currencyCourseReducer";
 import {CommonSelectCurrency} from "../CommonComponents/CommonComponents";
 
 const CurrentlyCurrencyCourse = (props) => {
     const [openedList, openCloseList] = useState(false);
 
     useEffect(() => {
-        props.getCurrencies();
-        props.getCurrencyCourse(145);
+        props.setCurrencies();
+        props.setCurrencyCourse(145);
     }, [props.currencies.length]);
+
+    useEffect(() => {
+        props.getCurrencyCourseToPeriod(props.selectedCurrencyId, props.startDate, props.endDate);
+    }, [props.selectedCurrencyId]);
 
     const course = props.currenciesCourses.find(item => item.currencyId === +props.selectedCurrencyId).course;
 
@@ -21,7 +25,7 @@ const CurrentlyCurrencyCourse = (props) => {
 
     const changeCurrency = (e) => {
         openCloseList(false);
-        props.getCurrencyCourse(e.currentTarget.value);
+        props.setCurrencyCourse(e.currentTarget.value);
     };
 
     return (
@@ -45,12 +49,14 @@ const mapStateToProps = (state) => {
     return {
         currencies: state.currenciesCourses.currencies,
         currenciesCourses: state.currenciesCourses.currenciesCourses,
-        selectedCurrencyId: state.currenciesCourses.selectedCurrencyId
+        selectedCurrencyId: state.currenciesCourses.selectedCurrencyId,
+        startDate: state.currenciesCourses.startDate,
+        endDate: state.currenciesCourses.endDate
     }
 };
 
 export default connect(mapStateToProps, {
-    getCurrencies,
-    getCurrencyCourse,
+    setCurrencies,
+    setCurrencyCourse,
     getCurrencyCourseToPeriod
 })(CurrentlyCurrencyCourse);

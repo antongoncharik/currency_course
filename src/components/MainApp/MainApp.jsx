@@ -17,7 +17,7 @@ const MainApp = (props) => {
                 <ChartCurrency/>
             </div>
         </div>
-    );
-}
+    )
+};
 
 export default MainApp;

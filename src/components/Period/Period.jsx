@@ -2,9 +2,9 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import DayPicker, {DateUtils} from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
-import s from './Period.module.css';
 import {connect} from "react-redux";
-import {getCurrencyCourseToPeriod} from "../../redux/currencyCourseReducer";
+import {getCurrencyCourseToPeriod, setPeriod} from "../../redux/currencyCourseReducer";
+import s from './Period.module.css';
 
 class Period extends React.Component {
     static defaultProps = {
@@ -31,9 +31,10 @@ class Period extends React.Component {
         if (range.from && range.to) {
             const startDate = new Date(range.from);
             const endDate = new Date(range.to);
-            this.props.getCurrencyCourseToPeriod(this.props.selectedCurrencyId,
-                `${startDate.getFullYear()}-${startDate.getMonth()}-${startDate.getDate()}`,
-                `${endDate.getFullYear()}-${endDate.getMonth()}-${endDate.getDate()}`);
+            const startDateStr = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`;
+            const endDateStr = `${endDate.getFullYear()}-${endDate.getMonth() + 1}-${endDate.getDate()}`;
+            this.props.setPeriod(startDateStr, endDateStr);
+            this.props.getCurrencyCourseToPeriod(this.props.selectedCurrencyId, startDateStr, endDateStr);
         }
     }
 
@@ -45,7 +46,7 @@ class Period extends React.Component {
         const {from, to} = this.state;
         const modifiers = {start: from, end: to};
         return (
-            <div>
+            <div className={s.period}>
                 <p>
                     {!from && !to && 'Please select the first day.'}
                     {from && !to && 'Please select the last day.'}
@@ -99,4 +100,6 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, {getCurrencyCourseToPeriod})(Period);
+export default connect(mapStateToProps, {
+    getCurrencyCourseToPeriod, setPeriod
+})(Period);

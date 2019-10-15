@@ -12,6 +12,7 @@ const SET_SELECTED_CURRENCY = 'SET_SELECTED_CURRENCY';
 const SET_SELECTED_CURRENCY_UP = 'SET_SELECTED_CURRENCY_UP';
 const SET_SELECTED_CURRENCY_DOWN = 'SET_SELECTED_CURRENCY_DOWN';
 const SET_AMOUNT_CURRENCY = 'SET_AMOUNT_CURRENCY';
+const SET_PERIOD = 'SET_PERIOD';
 
 const initialState = {
     currencies: [{currencyId: 145, currencyAbbreviation: '', currencyName: ''}],
@@ -21,7 +22,9 @@ const initialState = {
     selectedCurrencyUpId: 145,
     selectedCurrencyDownId: 145,
     amountCurrencyUp: 1,
-    amountCurrencyDown: 1
+    amountCurrencyDown: 1,
+    startDate: '',
+    endDate: ''
 };
 
 export const currencyCourseReducer = (state = initialState, action) => {
@@ -82,8 +85,14 @@ export const currencyCourseReducer = (state = initialState, action) => {
                     ({
                         currencyId: item.Cur_ID,
                         course: item.Cur_OfficialRate,
-                        date: item.Date
+                        date: item.Date.slice(0, 10)
                     }))
+            };
+            break;
+        case
+        SET_PERIOD:
+            return {
+                ...state, startDate: action.startDate, endDate: action.endDate
             };
             break;
         default:
@@ -97,23 +106,26 @@ const getCurrenciesAC = (dataCurrencies) => {
 const getCurrencyCourseAC = (dataCurrency) => {
     return {type: 'GET_CURRENCY_COURSE', dataCurrency}
 };
-const setCurrencyCourseToPeriodAC = (id, dataCurrencyToPeriod) => {
+const getCurrencyCourseToPeriodAC = (id, dataCurrencyToPeriod) => {
     return {type: 'GET_CURRENCY_COURSE_TO_PERIOD', id, dataCurrencyToPeriod}
 };
-const setSelectedCurrencyAC = (id) => {
+const getSelectedCurrencyAC = (id) => {
     return {type: 'SET_SELECTED_CURRENCY', id}
 };
-const setSelectedCurrencyUpAC = (id) => {
+const getSelectedCurrencyUpAC = (id) => {
     return {type: 'SET_SELECTED_CURRENCY_UP', id}
 };
-const setSelectedCurrencyDownAC = (id) => {
+const getSelectedCurrencyDownAC = (id) => {
     return {type: 'SET_SELECTED_CURRENCY_DOWN', id}
 };
-const setAmountCurrencyAC = (amountUp, amountDown) => {
+const getAmountCurrencyAC = (amountUp, amountDown) => {
     return {type: 'SET_AMOUNT_CURRENCY', amountUp, amountDown}
 };
+const getPeriodAC = (startDate, endDate) => {
+    return {type: 'SET_PERIOD', startDate, endDate}
+};
 
-export const getCurrencies = () => {
+export const setCurrencies = () => {
     return async (dispatch) => {
         try {
             const result = await getCurrenciesAPI();
@@ -126,20 +138,22 @@ export const getCurrencies = () => {
         }
     }
 };
-export const getCurrencyCourse = (id, numberCurrency = '', amount, currencyUpId, currencyDownId) => {
+export const setCurrencyCourse = (id, numberCurrency = '', amount, currencyUpId, currencyDownId) => {
     return async (dispatch, getState) => {
         try {
             const result = await getCurrencyCourseAPI(id);
             if (result.status === 200) {
                 dispatch(getCurrencyCourseAC(result.data));
                 if (numberCurrency === '') {
-                    dispatch(setSelectedCurrencyAC(id));
+                    dispatch(getSelectedCurrencyAC(id));
                 } else if (numberCurrency === 'up') {
-                    dispatch(setSelectedCurrencyUpAC(id));
-                    setCalculationCurrency(dispatch, getState().currenciesCourses.currenciesCourses, numberCurrency, amount, id, currencyDownId);
+                    dispatch(getSelectedCurrencyUpAC(id));
+                    setCalculationCurrency(dispatch, getState().currenciesCourses.currenciesCourses, numberCurrency,
+                        amount, id, currencyDownId);
                 } else if (numberCurrency === 'down') {
-                    dispatch(setSelectedCurrencyDownAC(id));
-                    setCalculationCurrency(dispatch, getState().currenciesCourses.currenciesCourses, numberCurrency, amount, currencyUpId, id);
+                    dispatch(getSelectedCurrencyDownAC(id));
+                    setCalculationCurrency(dispatch, getState().currenciesCourses.currenciesCourses, numberCurrency,
+                        amount, currencyUpId, id);
                 }
             }
         } catch (e) {
@@ -147,12 +161,17 @@ export const getCurrencyCourse = (id, numberCurrency = '', amount, currencyUpId,
         }
     }
 };
+export const setPeriod = (startDate, endDate) => {
+    return (dispatch) => {
+        dispatch(getPeriodAC(startDate, endDate));
+    }
+};
 export const getCurrencyCourseToPeriod = (id, startDate, endDate) => {
     return async (dispatch) => {
         try {
             const result = await getCurrencyCourseToPeriodAPI(id, startDate, endDate);
             if (result.status === 200) {
-                dispatch(setCurrencyCourseToPeriodAC(id, result.data));
+                dispatch(getCurrencyCourseToPeriodAC(id, result.data));
             }
         } catch (e) {
 
@@ -161,8 +180,8 @@ export const getCurrencyCourseToPeriod = (id, startDate, endDate) => {
 };
 export const setAmountCurrency = (changedCurrency, amount, currencyUpId, currencyDownId) => {
     return (dispatch, getState) => {
-        setCalculationCurrency(dispatch, getState().currenciesCourses.currenciesCourses, changedCurrency, amount, currencyUpId, currencyDownId);
-
+        setCalculationCurrency(dispatch, getState().currenciesCourses.currenciesCourses, changedCurrency,
+            amount, currencyUpId, currencyDownId);
     }
 };
 const setCalculationCurrency = (dispatch, currenciesCourses, changedCurrency, amount, currencyUpId, currencyDownId) => {
@@ -175,12 +194,12 @@ const setCalculationCurrency = (dispatch, currenciesCourses, changedCurrency, am
         if (currencyUpId === currencyDownId) {
             newAmount = amount;
         }
-        dispatch(setAmountCurrencyAC(+amount, +newAmount));
+        dispatch(getAmountCurrencyAC(+amount, +newAmount));
     } else {
         let newAmount = calculationAmountCurrency(+amount, courseDown, courseUp, scaleDown, scaleUp);
         if (currencyUpId === currencyDownId) {
             newAmount = amount;
         }
-        dispatch(setAmountCurrencyAC(+newAmount, +amount));
+        dispatch(getAmountCurrencyAC(+newAmount, +amount));
     }
 };

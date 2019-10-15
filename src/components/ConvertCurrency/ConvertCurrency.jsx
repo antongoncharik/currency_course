@@ -3,23 +3,31 @@ import s from './ConvertCurrency.module.css';
 import cn from 'classnames';
 import {CommonSelectCurrency, CommonInputCurrency} from "../CommonComponents/CommonComponents";
 import {connect} from "react-redux";
-import {getCurrencyCourse, setAmountCurrency} from "../../redux/currencyCourseReducer";
+import {setCurrencyCourse, setAmountCurrency} from "../../redux/currencyCourseReducer";
 
 const ConvertCurrency = (props) => {
     const [openedListUp, openCloseListUp] = useState(false);
+
     const [openedListDown, openCloseListDown] = useState(false);
+
     const currencyUpAbbreviation = props.currencies.find(item => item.currencyId === +props.selectedCurrencyUpId).currencyAbbreviation;
+
     const currencyDownAbbreviation = props.currencies.find(item => item.currencyId === +props.selectedCurrencyDownId).currencyAbbreviation;
+
     const scaleUp = props.currenciesCourses.find(item => item.currencyId === +props.selectedCurrencyUpId).scale;
+
     const scaleDown = props.currenciesCourses.find(item => item.currencyId === +props.selectedCurrencyDownId).scale;
+
     const changeCurrencyUp = (e) => {
         openCloseListUp(false);
-        props.getCurrencyCourse(e.currentTarget.value, 'up', props.amountCurrencyUp, props.selectedCurrencyUpId, props.selectedCurrencyDownId);
+        props.setCurrencyCourse(e.currentTarget.value, 'up', props.amountCurrencyUp, props.selectedCurrencyUpId, props.selectedCurrencyDownId);
     };
+
     const changeCurrencyDown = (e) => {
         openCloseListDown(false);
-        props.getCurrencyCourse(e.currentTarget.value, 'down', props.amountCurrencyDown, props.selectedCurrencyUpId, props.selectedCurrencyDownId);
+        props.setCurrencyCourse(e.currentTarget.value, 'down', props.amountCurrencyDown, props.selectedCurrencyUpId, props.selectedCurrencyDownId);
     };
+
     const changeAmountCurrency = (e, changedCurrency, currencyUpId, currencyDownId) => {
         props.setAmountCurrency(changedCurrency, +e.currentTarget.value, currencyUpId, currencyDownId);
     };
@@ -77,5 +85,6 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, {
-    getCurrencyCourse, setAmountCurrency
+    setCurrencyCourse,
+    setAmountCurrency
 })(ConvertCurrency);
