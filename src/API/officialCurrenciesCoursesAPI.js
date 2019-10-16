@@ -1,7 +1,7 @@
 import * as axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://www.nbrb.by/api/exrates/'
+    baseURL: 'https://www.nbrb.by/api/exrates/'
 });
 
 export const getCurrenciesAPI = () => {
